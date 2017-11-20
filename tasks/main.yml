@@ -4,7 +4,8 @@
 # from http://ubuntuforums.org/showthread.php?t=2105755
 #
 - name: Install Time Machine support packages
-  sudo: yes
+  become: yes
+  become_user: root
   apt: name="{{ item }}"
   with_items:
     - netatalk
@@ -16,11 +17,13 @@
 # Configure network drives
 #
 - name: Create Time Machine mount point
-  sudo: yes
+  become: yes
+  become_user: root
   file: path="{{ time_machine_root_dir }}" state=directory mode=0777
 
 - name: Mount Time Machine at boot
-  sudo: yes
+  become: yes
+  become_user: root
   mount:
     fstype: "{{ time_machine_drive_fstype }}"
     name: "{{ time_machine_root_dir }}"
@@ -31,7 +34,8 @@
   notify: Mount Time Machine partition
 
 - name: Clear Time Machine mount
-  sudo: yes
+  become: yes
+  become_user: root
   mount:
     fstype: "{{ time_machine_drive_fstype }}"
     name: "{{ time_machine_root_dir }}"
